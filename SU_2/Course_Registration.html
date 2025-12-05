@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Course Registration Form</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: "Inter", system-ui, sans-serif;
+        background: #eef2ff;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding-top: 60px;
+        min-height: 100vh;
+    }
+    .card {
+        background: #ffffff;
+        padding: 40px 50px;
+        border-radius: 20px;
+        width: 600px;
+        box-shadow: 0 15px 45px rgba(24, 19, 19, 0.12);
+    }
+    h1 {
+        text-align: center;
+        font-size: 30px;
+        font-weight: 700;
+        margin-bottom: 30px;
+        color: #111827;
+    }
+    label {
+        font-size: 16px;
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 8px;
+        display: block;
+    }
+    input[type="text"] {
+        width: 100%;
+        padding: 12px 14px;
+        font-size: 15px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        margin-bottom: 22px;
+        outline: none;
+    }
+    .subject-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+        font-size: 16px;
+        color: #111827;
+    }
+    .subject-row input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+    }
+    .fee-box {
+        background: #e8efff;
+        padding: 14px 18px;
+        border-radius: 10px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 17px;
+        font-weight: 700;
+        margin-top: 20px;
+        color: #1e293b;
+    }
+    button {
+        width: 100%;
+        margin-top: 25px;
+        padding: 14px;
+        background: #0b63f3;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 17px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+    .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 40px;
+        transform: translateX(-50%);
+        background: #ffffff;
+        color: #111827;
+        padding: 30px 35px;
+        border-radius: 20px;
+        font-size: 16px;
+        box-shadow: 0 15px 45px rgba(0,0,0,0.18); 
+        max-width: 600px;
+        width: 90%;
+        white-space: pre-line;
+        display: none; 
+        line-height: 1.5;
+        border-left: 5px solid #0b63f3;
+    }
+</style>
+</head>
+<body>
+<div id="toast" class="toast"></div>
+<div class="card">
+    <h1>Course Registration Form</h1>
+    <form id="regForm">
+        <label>Student Name:</label>
+        <input type="text" id="name" placeholder="Enter your name" required>
+        <label>Select Subjects:</label>
+        <div class="subject-row">
+            <input type="checkbox" class="subject-input" value="1000" data-label="Data Structures (₹1000)">
+            <span>Data Structures (₹1000)</span>
+        </div>
+        <div class="subject-row">
+            <input type="checkbox" class="subject-input" value="1200" data-label="Operating Systems (₹1200)">
+            <span>Operating Systems (₹1200)</span>
+        </div>
+        <div class="subject-row">
+            <input type="checkbox" class="subject-input" value="1500" data-label="DBMS (₹1500)">
+            <span>DBMS (₹1500)</span>
+        </div>
+        <div class="subject-row">
+            <input type="checkbox" class="subject-input" value="1800" data-label="Computer Networks (₹1800)">
+            <span>Computer Networks (₹1800)</span>
+        </div>
+        <div class="subject-row">
+            <input type="checkbox" class="subject-input" value="2000" data-label="Java Programming (₹2000)">
+            <span>Java Programming (₹2000)</span>
+        </div>
+        <div class="fee-box">
+            <span>Total Registration Fee:</span>
+            <span id="total-fee">₹0</span>
+        </div>
+        <button type="submit">Submit Registration</button>
+    </form>
+</div>
+<script>
+    const subjectInputs = document.querySelectorAll(".subject-input");
+    const totalEl = document.getElementById("total-fee");
+    const toast = document.getElementById("toast");
+    subjectInputs.forEach(input => {
+        input.addEventListener("change", updateTotal);
+    });
+    function updateTotal() {
+        let total = 0;
+        subjectInputs.forEach(input => {
+            if (input.checked) total += Number(input.value);
+        });
+        totalEl.textContent = "₹" + total;
+    }
+    function showToast(message) {
+        toast.textContent = message;
+        toast.style.display = "block";
+        setTimeout(() => {
+            toast.style.display = "none";
+        }, 6000);
+    }
+    document.getElementById("regForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const name = document.getElementById("name").value.trim();
+        if (!name) {
+            showToast("Please enter your name.");
+            return;
+        }
+        let total = 0;
+        let selected = [];
+        subjectInputs.forEach(input => {
+            if (input.checked) {
+                selected.push(input.dataset.label);
+                total += Number(input.value);
+            }
+        });
+        if (selected.length === 0) {
+            showToast("Please select at least one subject.");
+            return;
+        }
+        const list = selected.map(s => "• " + s).join("\n");
+        const msg =
+            "Name: " + name +
+            "\n\nSelected Courses:\n" + list +
+            "\n\nTotal Fee: ₹" + total;
+        showToast(msg);
+    });
+</script>
+</body>
+</html>
