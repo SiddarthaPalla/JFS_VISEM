@@ -9,13 +9,11 @@
             margin: 40px;
         }
 
-        /* Dropdown style */
         select {
             height: 40px;
             width: 320px;
         }
 
-        /* Button styles */
         button {
             height: 40px;
             width: 120px;
@@ -41,7 +39,6 @@
             min-height: 260px;
         }
 
-        /* Image styling */
         #photo {
             width: 220px;
             height: 220px;
@@ -51,7 +48,6 @@
             display: none;
         }
 
-        /* Special frame for James Gosling */
         .photo-james {
             border: 6px solid gold !important; 
             padding: 5px;
@@ -82,7 +78,6 @@
 
     <h2>Select a Name to Display Photo & Info</h2>
 
-    <!-- NAME DROPDOWN -->
     <select id="nameSelect">
         <option value="">-- Select Name --</option>
         <option value="guido">Guido van Rossum (Python)</option>
@@ -101,47 +96,46 @@
         <option value="satyanadella">Satya Nadella</option>
         <option value="AdaLovelace">Ada Lovelace</option>
         <option value="madhu">Madhu</option>
+        <option value="Siddartha Palla">Siddartha Palla</option>
     </select>
 
-    <button onclick="showDetails()">OK</button>
-    <button onclick="cancelDetails()">Cancel</button>
+    <!-- OK button only -->
+    <button onclick="confirmAndShow()">OK</button>
 
-    <!-- DISPLAY SECTION -->
     <div class="container">
-
-        <!-- Photo box -->
         <div class="photo-box">
             <img id="photo" src="" alt="Person Photo">
         </div>
 
-        <!-- Information box -->
         <div class="info-box">
             <span class="title">Person Information</span>
             <p id="infoText">Please select a person from the dropdown.</p>
         </div>
-
     </div>
 
     <script>
+        function confirmAndShow() {
+            let userChoice = confirm("Do you want to continue?");
+            
+            if (userChoice) {
+                showDetails();  // Run your original code
+            }
+        }
 
-        /* Show details when OK button is clicked */
         function showDetails() {
             let name = document.getElementById("nameSelect").value;
             let photo = document.getElementById("photo");
             let info  = document.getElementById("infoText");
 
-            // Remove previous special effects
             photo.classList.remove("photo-james");
             photo.classList.remove("photo-james-blue");
 
-            // If no name selected
             if (name === "") {
                 photo.style.display = "none";
                 info.innerHTML = "Please select a person first.";
                 return;
             }
 
-            // Photo mapping
             let photos = {
                 "guido": "images/guido.jpg",
                 "dennis": "images/dennis.jpg",
@@ -158,10 +152,10 @@
                 "Sundar_Pichai": "images/Sundar_Pichai.jpg",
                 "satyanadella": "images/satyanadella.jpg",
                 "AdaLovelace": "images/AdaLovelace.jpg",
-                "madhu": "images/madhu.jpg"
+                "madhu": "images/madhu.jpg",
+                "Siddartha Palla": "images/Siddartha Palla.jpg"
             };
 
-            // Information mapping
             let details = {
                 "guido": "Guido van Rossum created Python in 1991.",
                 "dennis": "Dennis Ritchie developed C and co-created UNIX.",
@@ -178,29 +172,19 @@
                 "Sundar_Pichai": "Sundar Pichai is Google CEO.",
                 "satyanadella": "Satya Nadella is Microsoft CEO.",
                 "AdaLovelace": "Ada Lovelace was the first programmer.",
-                "madhu": "B. Madhusudhan Rao — JFS Trainer."
+                "madhu": "B. Madhusudhan Rao — JFS Trainer.",
+                "Siddartha Palla": "P. Siddartha -23951A66J7"
             };
 
-            // Show photo and info
             photo.src = photos[name];
             photo.style.display = "block";
             info.innerHTML = details[name];
 
-            // Apply special frame only for James Gosling
             if (name === "james") {
                 photo.classList.add("photo-james");
                 photo.classList.add("photo-james-blue");
             }
         }
-
-        /* Cancel button resets everything */
-        function cancelDetails() {
-            document.getElementById("nameSelect").value = "";
-            document.getElementById("photo").style.display = "none";
-            document.getElementById("infoText").innerHTML =
-                "Please select a person from the dropdown.";
-        }
-
     </script>
 
 </body>
